@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const Register = require('./Routes/POST/Register.js');
 const app = express();
 const port = 4000;
 
@@ -10,6 +11,9 @@ app.use(cors({
     credentials: true,
 
 }));
+app.use(express.json());
+
+app.use(Register);
 
 app.get('/', (req, res) => {
     res.send('hello world');
