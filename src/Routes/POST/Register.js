@@ -1,4 +1,5 @@
 const express = require('express');
+const bcrypt = require('bcrypt');
 const router = express.Router();
 const {v4: uuid} = require('uuid');
 const db = require('../../Config/MySQL/db.js');
@@ -13,18 +14,44 @@ router.post('/register', upload.single('image'), async (req, res) => {
         const {email, password} = req.body;
         const image = req.file;
         const accountId = uuid(); 
-        const salt = bcrypt.genSalt(10);
+        const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
-        const [results] = await db.execute(
-            'INSERT INTO accounts (email, password, id) values (?, ?, ?)',
-            [email, hashedPassword, accountId],
-        );
+        if(image){
+            const imageId = uuid();
 
-        if(results.affectedRows === 1)
-            res.status(200).send(results.message);
-        else
-            res.status(501).send(results.message);
+            const [accountResults] = await db.execute(
+                'INSERT INTO accounts (email, password, id, imageId) values (?, ?, ?, ?)',
+                [email, hashedPassword, accountId, imageId],
+            );
+
+            if(!accountResults.affectedRows)
+                return res.status(501).send(accountResults.message);
+
+            const [imageResults] = await db.execute(
+                'INSERT INTO account_images (id, account_id, name, mimetype, size, buffer) values (?, ?, ?, ?, ?, ?)',
+                [imageId, accountId, image.filename, image.mimetype, image.size, image.buffer]
+            );
+
+            if(!imageResults.affectedRows)
+                return res.status(501).send('Account was created, but image could not be uploaded');
+
+            res.status(200).send('Account has been created and image has been uploaded');
+        }
+        else{
+            const [accountResults] = await db.execute(
+                'INSERT INTO accounts (email, password, id) values (?, ?, ?)',
+                [email, hashedPassword, accountId],
+            );
+
+            if(!accountResults.affectedRows)
+                return res.status(501).send(accountResults.message);
+
+            res.status(200).send('Account has been created');
+        }
+
+
+    
     }
     catch(error){
         const message = error.message;
