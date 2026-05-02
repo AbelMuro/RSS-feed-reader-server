@@ -26,7 +26,11 @@ router.post('/login', async (req, res) => {
             return res.status(401).send('Email or password is incorrect');
 
         const token = jwt.sign({...accounts[0]}, JWT_SECRET);
-        res.cookie('accountToken', token);
+        res.cookie('accountToken', token, {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'Strict'
+        });
         res.status(200).send('User is logged in');
     }
     catch(error){

@@ -48,15 +48,15 @@ router.post('/register', upload.single('image'), async (req, res) => {
                 return res.status(501).send(accountResults.message);
 
             res.status(200).send('Account has been created');
-        }
-
-
-    
+        }    
     }
     catch(error){
         const message = error.message;
+        const code = error.code;
         console.log(message);
-        res.status(500).send(message);
+
+        if(code === 'ER_DUP_ENTRY')
+            res.status(500).send('Email already exists');
     }
 });
 
