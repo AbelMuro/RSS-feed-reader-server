@@ -1,17 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const multer = require('multer');
 const db = require('../../Config/MySQL/db.js');
-const storage = multer.memoryStorage();
-const upload = multer({storage});
 const jwt = require('jsonwebtoken');
 const {config} = require('dotenv');
 config();
 
-router.put('/update-account', upload.single('image'), async (req, res) => {
+router.put('/update-email', async (req, res) => {
     try{
         const {email} = req.body;
-        const file = req.file;
         const accountToken = req.cookies.accountToken;
         const JWT_SECRET = process.env.JWT_SECRET;
 
@@ -27,24 +23,6 @@ router.put('/update-account', upload.single('image'), async (req, res) => {
 
         if(!updateEmail.affectedRows)
             return res.status(404).send(results.message);
-
-        if(file){
-            const [updateImage] = await db.execute(
-                'UPDATE account_images SET name = ?, mimetype = ?, size = ?, buffer = ? WHERE account_id = ?',
-                [file.filename, file.mimetype, file.size, file.buffer, account.id]
-            )    
-            
-            if(!updateImage.affectedRows)
-                return res.status(404).send(`Updated the email, but couldn't update account image : ${results.message}`);
-
-            const [deleteOldImage] = await db.execute(
-                'DELETE FROM account_images WHERE account_id = ?',
-                [account.id]
-            );
-
-            if(!deleteOldImage.affectedRows)
-                return res.status(404).send(`Update the email and image, but couldn't delete the old account image : ${results.message}`)
-        }
 
         res.status(200).send('Successfully updated account details')
 

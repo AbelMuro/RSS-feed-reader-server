@@ -5,7 +5,9 @@ const Register = require('./Routes/POST/Register.js');
 const Login = require('./Routes/POST/Login.js');
 const ForgotPassword = require('./Routes/POST/ForgotPassword.js');
 const ResetPassword = require('./Routes/POST/ResetPassword.js');
-const UpdateAccount = require('./Routes/PUT/UpdateAccount.js');
+const UpdateEmail = require('./Routes/PUT/UpdateEmail.js');
+const UpdateEmailNotification = require('./Routes/PUT/UpdateEmailNotification.js');
+const UpdateTextNotification = require('./Routes/PUT/UpdateTextNotification.js');
 const app = express();
 const port = 4000;
 
@@ -14,8 +16,8 @@ app.use(cors({
     methods: ['GET', 'POST', 'PUT'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
-
 }));
+
 app.use(express.json());
 app.use(cookieParser());
 
@@ -23,7 +25,9 @@ app.use(Register);
 app.use(Login);
 app.use(ForgotPassword);
 app.use(ResetPassword);
-app.use(UpdateAccount);
+app.use(UpdateEmail);
+app.use(UpdateEmailNotification);
+app.use(UpdateTextNotification);
 
 app.get('/', (req, res) => {
     res.send('hello world');
