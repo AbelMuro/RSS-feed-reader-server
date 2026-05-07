@@ -8,6 +8,8 @@ const ResetPassword = require('./Routes/POST/ResetPassword.js');
 const UpdateEmail = require('./Routes/PUT/UpdateEmail.js');
 const UpdateEmailNotification = require('./Routes/PUT/UpdateEmailNotification.js');
 const UpdateTextNotification = require('./Routes/PUT/UpdateTextNotification.js');
+const GetRealImage = require('./Routes/GET/GetRealImage.js');
+const UpdateImage = require('./Routes/PUT/UpdateImage.js');
 const app = express();
 const port = 4000;
 
@@ -28,6 +30,8 @@ app.use(ResetPassword);
 app.use(UpdateEmail);
 app.use(UpdateEmailNotification);
 app.use(UpdateTextNotification);
+app.use(GetRealImage);
+app.use(UpdateImage);
 
 app.get('/', (req, res) => {
     res.send('hello world');
