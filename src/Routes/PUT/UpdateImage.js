@@ -15,13 +15,15 @@ router.put('/update-image', input.single('image'), async (req, res) => {
         const accountToken = req.cookies.accountToken;
         const JWT_SECRET = process.env.JWT_SECRET;
 
+        if(!file)
+            return res.status(401).send('File was not sent to the backend')
 
         if(!accountToken)
             return res.status(401).send('Third-party-cookies and/or cross-site-tracking are not enabled in the browser');
 
         const decodedToken = jwt.decode(accountToken, JWT_SECRET);
         const accountId = decodedToken.id;
-        const name = file.filename;
+        const name = file.originalname;
         const mimeType = file.mimetype;
         const size = file.size;
         const buffer = file.buffer;
