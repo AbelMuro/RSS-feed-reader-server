@@ -26,6 +26,7 @@ router.post('/forgot-password', async (req, res) => {
             host: 'smtp.gmail.com',
             secure: true,
             port: 465,
+            family: 4,
             auth: {
                 user: process.env.user,
                 pass: process.env.password
@@ -37,7 +38,7 @@ router.post('/forgot-password', async (req, res) => {
             to: email,
             subject: 'Reset Link for RSS feed reader app',
             text: `Please click on the following link to reset your password, ${resetLink}`
-        })
+        });
 
         res.status(200).send('Reset Link has been sent');
     }

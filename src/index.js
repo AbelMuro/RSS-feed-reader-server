@@ -10,6 +10,8 @@ const UpdateEmailNotification = require('./Routes/PUT/UpdateEmailNotification.js
 const UpdateTextNotification = require('./Routes/PUT/UpdateTextNotification.js');
 const GetRealImage = require('./Routes/GET/GetRealImage.js');
 const UpdateImage = require('./Routes/PUT/UpdateImage.js');
+const UpdatePassword = require('./Routes/PUT/UpdatePassword.js');
+const AddArticle = require('./Routes/POST/AddArticle.js');
 const app = express();
 const port = 4000;
 
@@ -32,6 +34,8 @@ app.use(UpdateEmailNotification);
 app.use(UpdateTextNotification);
 app.use(GetRealImage);
 app.use(UpdateImage);
+app.use(UpdatePassword);
+app.use(AddArticle);
 
 app.get('/', (req, res) => {
     res.send('hello world');
