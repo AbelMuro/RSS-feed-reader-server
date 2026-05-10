@@ -11,7 +11,7 @@ const upload = multer({
 
 router.post('/register', upload.single('image'), async (req, res) => {
     try{
-        const {email, password} = req.body;
+        const {email, password, company} = req.body;
         const image = req.file;
         const accountId = uuid(); 
         const salt = await bcrypt.genSalt(10);
@@ -21,8 +21,8 @@ router.post('/register', upload.single('image'), async (req, res) => {
             const imageId = uuid();
 
             const [accountResults] = await db.execute(
-                'INSERT INTO accounts (email, password, id, imageId) values (?, ?, ?, ?)',
-                [email, hashedPassword, accountId, imageId],
+                'INSERT INTO accounts (email, password, id, imageId, company) values (?, ?, ?, ?, ?)',
+                [email, hashedPassword, accountId, imageId, company],
             );
 
             if(!accountResults.affectedRows)
@@ -40,8 +40,8 @@ router.post('/register', upload.single('image'), async (req, res) => {
         }
         else{
             const [accountResults] = await db.execute(
-                'INSERT INTO accounts (email, password, id) values (?, ?, ?)',
-                [email, hashedPassword, accountId],
+                'INSERT INTO accounts (email, password, id, company) values (?, ?, ?, ?)',
+                [email, hashedPassword, accountId, company],
             );
 
             if(!accountResults.affectedRows)
