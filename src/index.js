@@ -12,13 +12,14 @@ const GetRealImage = require('./Routes/GET/GetRealImage.js');
 const UpdateImage = require('./Routes/PUT/UpdateImage.js');
 const UpdatePassword = require('./Routes/PUT/UpdatePassword.js');
 const AddArticle = require('./Routes/POST/AddArticle.js');
+const DeleteAccount = require('./Routes/DELETE/DeleteAccount.js');
 const app = express();
 const port = 4000;
 
 app.use(cors({
     origin: 'http://localhost:5173',
-    methods: ['GET', 'POST', 'PUT'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization', ''],
     credentials: true,
 }));
 
@@ -36,6 +37,7 @@ app.use(GetRealImage);
 app.use(UpdateImage);
 app.use(UpdatePassword);
 app.use(AddArticle);
+app.use(DeleteAccount);
 
 app.get('/', (req, res) => {
     res.send('hello world');

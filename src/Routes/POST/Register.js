@@ -21,7 +21,7 @@ router.post('/register', upload.single('image'), async (req, res) => {
             const imageId = uuid();
 
             const [accountResults] = await db.execute(
-                'INSERT INTO accounts (email, password, id, imageId, company) values (?, ?, ?, ?, ?)',
+                'INSERT INTO accounts (email, password, id, imageId, company) VALUES (?, ?, ?, ?, ?)',
                 [email, hashedPassword, accountId, imageId, company],
             );
 
@@ -29,18 +29,18 @@ router.post('/register', upload.single('image'), async (req, res) => {
                 return res.status(501).send(accountResults.message);
 
             const [imageResults] = await db.execute(
-                'INSERT INTO account_images (id, account_id, name, mimetype, size, buffer) values (?, ?, ?, ?, ?, ?)',
-                [imageId, accountId, image.filename, image.mimetype, image.size, image.buffer]
+                'INSERT INTO account_images (id, account_id, name, mimetype, size, buffer) VALUES (?, ?, ?, ?, ?, ?)',
+                [imageId, accountId, image.originalname, image.mimetype, image.size, image.buffer]
             );
 
             if(!imageResults.affectedRows)
                 return res.status(501).send('Account was created, but image could not be uploaded');
 
-            res.status(200).send('Account has been created and image has been uploaded');
+            res.status(200).send('Account has been created');
         }
         else{
             const [accountResults] = await db.execute(
-                'INSERT INTO accounts (email, password, id, company) values (?, ?, ?, ?)',
+                'INSERT INTO accounts (email, password, id, company) VALUES (?, ?, ?, ?)',
                 [email, hashedPassword, accountId, company],
             );
 
@@ -57,6 +57,8 @@ router.post('/register', upload.single('image'), async (req, res) => {
 
         if(code === 'ER_DUP_ENTRY')
             res.status(500).send('Email already exists');
+        else
+            res.status(500).send(message);
     }
 });
 
