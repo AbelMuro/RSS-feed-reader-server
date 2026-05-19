@@ -13,6 +13,8 @@ const UpdateImage = require('./Routes/PUT/UpdateImage.js');
 const UpdatePassword = require('./Routes/PUT/UpdatePassword.js');
 const AddArticle = require('./Routes/POST/AddArticle.js');
 const DeleteAccount = require('./Routes/DELETE/DeleteAccount.js');
+const GetAllArticles = require('./Routes/GET/GetAllArticles.js');
+const GetLoginStatus = require('./Routes/GET/GetLoginStatus.js');
 const app = express();
 const port = 4000;
 
@@ -38,6 +40,8 @@ app.use(UpdateImage);
 app.use(UpdatePassword);
 app.use(AddArticle);
 app.use(DeleteAccount);
+app.use(GetAllArticles);
+app.use(GetLoginStatus);
 
 app.get('/', (req, res) => {
     res.send('hello world');
