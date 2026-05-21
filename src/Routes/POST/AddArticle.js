@@ -18,10 +18,11 @@ router.post('/add-article', async (req, res) => {
         const decodedToken = jwt.decode(accountToken, JWT_SECRET);
         const accountId = decodedToken.id;
         const articleId = uuid();
+        const date = Date.now();
 
         const [results] = await db.execute(
-            'INSERT INTO articles (id, account_id, title, content, category) VALUES (?, ?, ?, ?, ?)',
-            [articleId, accountId, title, content, category]
+            'INSERT INTO articles (id, account_id, title, content, category, date_created) VALUES (?, ?, ?, ?, ?, ?)',
+            [articleId, accountId, title, content, category, date]
         );
 
         if(!results.affectedRows)

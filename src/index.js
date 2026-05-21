@@ -15,6 +15,7 @@ const AddArticle = require('./Routes/POST/AddArticle.js');
 const DeleteAccount = require('./Routes/DELETE/DeleteAccount.js');
 const GetAllArticles = require('./Routes/GET/GetAllArticles.js');
 const GetLoginStatus = require('./Routes/GET/GetLoginStatus.js');
+const GetAccountName = require('./Routes/GET/GetAccountName.js');
 const LogOut = require('./Routes/POST/Logout.js');
 const app = express();
 const port = 4000;
@@ -44,6 +45,7 @@ app.use(DeleteAccount);
 app.use(GetAllArticles);
 app.use(GetLoginStatus);
 app.use(LogOut);
+app.use(GetAccountName);
 
 app.get('/', (req, res) => {
     res.send('hello world');

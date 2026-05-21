@@ -9,9 +9,6 @@ router.get('/get-all-articles', async (req, res) => {
             []
         );
 
-        if(!articles.length)
-            return res.status(404).send(articles.message);
-
         res.status(200).json(articles);
     }
     catch(error){
