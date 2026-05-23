@@ -17,6 +17,7 @@ const GetAllArticles = require('./Routes/GET/GetAllArticles.js');
 const GetLoginStatus = require('./Routes/GET/GetLoginStatus.js');
 const GetAccountName = require('./Routes/GET/GetAccountName.js');
 const GetOPImage = require('./Routes/GET/GetOPImage.js');
+const GetAllCategories = require('./Routes/GET/GetAllCategories.js');
 const LogOut = require('./Routes/POST/Logout.js');
 const app = express();
 const port = 4000;
@@ -48,6 +49,7 @@ app.use(GetLoginStatus);
 app.use(LogOut);
 app.use(GetAccountName);
 app.use(GetOPImage);
+app.use(GetAllCategories);
 
 app.get('/', (req, res) => {
     res.send('hello world');
