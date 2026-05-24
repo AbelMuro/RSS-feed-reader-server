@@ -5,12 +5,11 @@ const db = require('../../Config/MySQL/db.js');
 const {config} = require('dotenv');
 config();
 
-
-router.get('/get-all-articles', async (req, res) => {
+router.put('/update-article-to-read', async (req, res) => {
     try{
-        const accountToken = req.cookies.accountToken;
+        const {articleId} = req.body;
         const JWT_SECRET = process.env.JWT_SECRET;
-        let unreadArticles = 0;
+        const accountToken = req.cookies.accountToken;
 
         if(!accountToken)
             return res.status(401).send('Third-party-cookies and/or cross-site-tracking are not enabled in the browser');
@@ -18,24 +17,15 @@ router.get('/get-all-articles', async (req, res) => {
         const decodedToken = jwt.decode(accountToken, JWT_SECRET);
         const accountId = decodedToken.id;
 
-        const [articles] = await db.execute(
-            'SELECT * FROM articles',
-            []
+        const [results] = await db.execute(
+            'INSERT INTO articles_read (accountId, articleId) VALUES (?, ?)',
+            [accountId, articleId]
         );
 
-        for(let i = 0; i < articles.length; i++){
-            const articleId = articles[i].id;
-            const [result] = await db.execute(
-                'SELECT * FROM articles_read WHERE articleId = ? AND accountId = ?',
-                [articleId, accountId]
-            );
+        if(!results.affectedRows)
+            return res.status(403).send(results.message);
 
-            if(!result.length)
-                unreadArticles++;
-        }
-
-
-        res.status(200).json({articles, unreadArticles});
+        res.status(200).send('Article marked as read');
     }
     catch(error){
         const message = error.message;
