@@ -20,6 +20,7 @@ const GetOPImage = require('./Routes/GET/GetOPImage.js');
 const GetAllCategories = require('./Routes/GET/GetAllCategories.js');
 const LogOut = require('./Routes/POST/Logout.js');
 const UpdateArticleToRead = require('./Routes/PUT/UpdateArticleToRead.js');
+const UpdateAllArticlesToRead = require('./Routes/PUT/UpdateAllArticlesToRead.js');
 const app = express();
 const port = 4000;
 
@@ -52,6 +53,7 @@ app.use(GetAccountName);
 app.use(GetOPImage);
 app.use(GetAllCategories);
 app.use(UpdateArticleToRead);
+app.use(UpdateAllArticlesToRead);
 
 app.get('/', (req, res) => {
     res.send('hello world');
