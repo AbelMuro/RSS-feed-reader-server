@@ -3,6 +3,9 @@ const bcrypt = require('bcrypt');
 const router = express.Router();
 const {v4: uuid} = require('uuid');
 const db = require('../../Config/MySQL/db.js');
+const jwt = require('jsonwebtoken');
+const {config} = require('jsonwebtoken');
+config();
 const multer = require('multer');
 const storage = multer.memoryStorage();
 const upload = multer({
@@ -13,12 +16,14 @@ router.post('/register', upload.single('image'), async (req, res) => {
     try{
         const {email, password, company} = req.body;
         const image = req.file;
-        const accountId = uuid(); 
+        const accountId = uuid();
+        let imageId = '';
+        const JWT_SECRET = process.env.JWT_SECRET; 
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
         if(image){
-            const imageId = uuid();
+            imageId = uuid();
 
             const [accountResults] = await db.execute(
                 'INSERT INTO accounts (email, password, id, imageId, company) VALUES (?, ?, ?, ?, ?)',
@@ -35,8 +40,6 @@ router.post('/register', upload.single('image'), async (req, res) => {
 
             if(!imageResults.affectedRows)
                 return res.status(501).send('Account was created, but image could not be uploaded');
-
-            res.status(200).send('Account has been created');
         }
         else{
             const [accountResults] = await db.execute(
@@ -46,9 +49,22 @@ router.post('/register', upload.single('image'), async (req, res) => {
 
             if(!accountResults.affectedRows)
                 return res.status(501).send(accountResults.message);
+        }   
+        
+        const accountToken = jwt.sign({
+            email, 
+            id: accountId, 
+            company, 
+            imageId, 
+            categories: ''
+        }, JWT_SECRET);
 
-            res.status(200).send('Account has been created');
-        }    
+        res.cookie('accountToken', accountToken, {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'Strict'
+        });
+        res.status(200).send('Account has been created');
     }
     catch(error){
         const message = error.message;
