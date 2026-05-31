@@ -22,6 +22,7 @@ const LogOut = require('./Routes/POST/Logout.js');
 const UpdateArticleToRead = require('./Routes/PUT/UpdateArticleToRead.js');
 const UpdateAllArticlesToRead = require('./Routes/PUT/UpdateAllArticlesToRead.js');
 const UpdateCategories = require('./Routes/PUT/UpdateCategories.js');
+const GetCategories = require('./Routes/GET/GetCategories.js');
 const app = express();
 const port = 4000;
 
@@ -56,6 +57,7 @@ app.use(GetAllCategories);
 app.use(UpdateArticleToRead);
 app.use(UpdateAllArticlesToRead);
 app.use(UpdateCategories);
+app.use(GetCategories);
 
 app.get('/', (req, res) => {
     res.send('hello world');

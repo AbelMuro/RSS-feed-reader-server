@@ -4,7 +4,7 @@ const router = express.Router();
 const {v4: uuid} = require('uuid');
 const db = require('../../Config/MySQL/db.js');
 const jwt = require('jsonwebtoken');
-const {config} = require('jsonwebtoken');
+const {config} = require('dotenv');
 config();
 const multer = require('multer');
 const storage = multer.memoryStorage();
