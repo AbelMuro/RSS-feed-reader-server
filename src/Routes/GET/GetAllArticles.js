@@ -18,10 +18,32 @@ router.get('/get-all-articles', async (req, res) => {
         const decodedToken = jwt.decode(accountToken, JWT_SECRET);
         const accountId = decodedToken.id;
 
-        const [articles] = await db.execute(
+        let [articles] = await db.execute(
             'SELECT * FROM articles',
             []
         );
+
+        const [account] = await db.execute(
+            'SELECT * FROM accounts WHERE id = ?',
+            [accountId]
+        );
+
+        if(!account.length)
+            return res.status(404).send(account.message);
+
+
+        let preferedCategories;
+        
+        if(account[0].categories)
+            preferedCategories = account[0].categories?.split(',');
+
+        if(preferedCategories){
+            articles = articles.filter((article) => {
+                const articleCategories = article.category?.split(',');
+                return preferedCategories.some((category) => articleCategories.includes(category));
+            });
+        }
+
 
         for(let i = 0; i < articles.length; i++){
             const articleId = articles[i].id;

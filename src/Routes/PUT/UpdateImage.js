@@ -42,6 +42,15 @@ router.put('/update-image', input.single('image'), async (req, res) => {
 
             if(!insertImage.affectedRows)
                 return res.status(400).send(insertImage.message);
+        
+            res.cookie(
+                'accountToken',
+                {
+                    ...decodedToken,
+                    imageId
+                },
+                {httpOnly: true, sameSite: 'Strict', secure: true}
+        )
         }
 
         res.status(200).send('Successfully updated account image');

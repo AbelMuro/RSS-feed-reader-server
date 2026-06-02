@@ -21,6 +21,15 @@ router.put('/receive-emails', async (req, res) => {
         if(!results.affectedRows)
             return res.status(404).send(results.message);
 
+        res.cookie(
+            'accountToken',
+            {
+                ...decodedToken,
+                receiveEmails
+            },
+            {httpOnly: true, sameSite: 'Strict', secure: true}
+        )
+
         res.status(200).send('Successfully updated email preference');
 
 

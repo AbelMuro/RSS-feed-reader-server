@@ -25,6 +25,14 @@ router.put('/update-categories', async (req, res) => {
         if(!results.affectedRows)
             return res.status(403).send(results.message);
 
+        res.cookie('accountToken',
+            {
+                ...decodedToken,
+                categories
+            },
+            {httpOnly: true, sameSite: 'Strict', secure: true}
+        )
+
         res.status(200).send('Categories have been updated in the account');
 
     }
