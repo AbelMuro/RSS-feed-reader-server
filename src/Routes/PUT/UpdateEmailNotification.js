@@ -21,18 +21,14 @@ router.put('/receive-emails', async (req, res) => {
         if(!results.affectedRows)
             return res.status(404).send(results.message);
 
+        const newAccountToken = jwt.sign({...decodedToken, receiveEmails}, JWT_SECRET);
         res.cookie(
             'accountToken',
-            {
-                ...decodedToken,
-                receiveEmails
-            },
+            newAccountToken,
             {httpOnly: true, sameSite: 'Strict', secure: true}
         )
 
         res.status(200).send('Successfully updated email preference');
-
-
     }
     catch(error){
         const message = error.message;

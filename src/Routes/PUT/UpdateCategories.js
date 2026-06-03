@@ -25,16 +25,12 @@ router.put('/update-categories', async (req, res) => {
         if(!results.affectedRows)
             return res.status(403).send(results.message);
 
+        const newAccountToken = jwt.sign({...decodedToken, categories}, JWT_SECRET);
         res.cookie('accountToken',
-            {
-                ...decodedToken,
-                categories
-            },
+            newAccountToken,
             {httpOnly: true, sameSite: 'Strict', secure: true}
-        )
-
+        );
         res.status(200).send('Categories have been updated in the account');
-
     }
     catch(error){
         const message = error.message;

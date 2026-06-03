@@ -24,12 +24,10 @@ router.put('/update-email', async (req, res) => {
         if(!updateEmail.affectedRows)
             return res.status(404).send(results.message);
 
+        const newAccountToken = jwt.sign({...decodedToken, email}, JWT_SECRET);
         res.cookie(
             'accountToken',
-            {
-                ...decodedToken,
-                email
-            },
+            newAccountToken,
             {httpOnly: true, sameSite: 'Strict', secure: true}
         )
         res.status(200).send('Successfully updated account details')

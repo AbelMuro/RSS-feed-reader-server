@@ -5,7 +5,6 @@ const db = require('../../Config/MySQL/db.js');
 const {config} = require('dotenv');
 config();
 
-
 router.get('/get-all-articles', async (req, res) => {
     try{
         const accountToken = req.cookies.accountToken;
@@ -16,6 +15,7 @@ router.get('/get-all-articles', async (req, res) => {
             return res.status(401).send('Third-party-cookies and/or cross-site-tracking are not enabled in the browser');
 
         const decodedToken = jwt.decode(accountToken, JWT_SECRET);
+        console.log(decodedToken);
         const accountId = decodedToken.id;
 
         let [articles] = await db.execute(
@@ -46,6 +46,7 @@ router.get('/get-all-articles', async (req, res) => {
 
 
         for(let i = 0; i < articles.length; i++){
+            console.log(articles[i]);
             const articleId = articles[i].id;
             const [result] = await db.execute(
                 'SELECT * FROM articles_read WHERE articleId = ? AND accountId = ?',

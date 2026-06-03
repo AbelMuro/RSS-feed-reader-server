@@ -24,7 +24,9 @@ router.get('/get-categories', async (req, res) => {
         if(!results.length)
             return res.status(404).send(results.message);
 
-        const categories = results[0]?.categories?.split(',');
+        let categories;
+        if(results[0].categories)
+            categories = results[0].categories.split(',');
 
         res.status(200).json(categories ? categories : []);
     }

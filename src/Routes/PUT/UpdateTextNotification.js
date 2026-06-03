@@ -21,14 +21,12 @@ router.put('/receive-texts', async (req, res) => {
         if(!results.affectedRows)
             return res.status(404).send(results.message);
 
-            res.cookie(
-                'accountToken',
-                {
-                    ...decodedToken,
-                    receiveTexts
-                },
-                {httpOnly: true, sameSite: 'Strict', secure: true}
-            )
+        const newAccountToken = jwt.sign({...decodedToken, receiveTexts}, JWT_SECRET);
+        res.cookie(
+            'accountToken',
+            newAccountToken,
+            {httpOnly: true, sameSite: 'Strict', secure: true}
+        )
         res.status(200).send('Successfully updated text notification');
 
     }

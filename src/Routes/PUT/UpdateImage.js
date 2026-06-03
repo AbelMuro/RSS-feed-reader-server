@@ -43,14 +43,12 @@ router.put('/update-image', input.single('image'), async (req, res) => {
             if(!insertImage.affectedRows)
                 return res.status(400).send(insertImage.message);
         
+            const newAccountToken = jwt.sign({...decodedToken, imageId}, JWT_SECRET);
             res.cookie(
                 'accountToken',
-                {
-                    ...decodedToken,
-                    imageId
-                },
+                newAccountToken,
                 {httpOnly: true, sameSite: 'Strict', secure: true}
-        )
+            );
         }
 
         res.status(200).send('Successfully updated account image');
