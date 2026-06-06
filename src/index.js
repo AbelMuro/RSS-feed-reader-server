@@ -14,6 +14,7 @@ const UpdatePassword = require('./Routes/PUT/UpdatePassword.js');
 const AddArticle = require('./Routes/POST/AddArticle.js');
 const DeleteAccount = require('./Routes/DELETE/DeleteAccount.js');
 const GetAllArticles = require('./Routes/GET/GetAllArticles.js');
+const GetArticle = require('./Routes/GET/GetArticle.js');
 const GetLoginStatus = require('./Routes/GET/GetLoginStatus.js');
 const GetAccountName = require('./Routes/GET/GetAccountName.js');
 const GetOPImage = require('./Routes/GET/GetOPImage.js');
@@ -58,6 +59,7 @@ app.use(UpdateArticleToRead);
 app.use(UpdateAllArticlesToRead);
 app.use(UpdateCategories);
 app.use(GetCategories);
+app.use(GetArticle);
 
 app.get('/', (req, res) => {
     res.send('hello world');
