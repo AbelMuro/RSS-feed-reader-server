@@ -44,7 +44,6 @@ router.get('/get-all-articles', async (req, res) => {
             });
         }
 
-
         for(let i = 0; i < articles.length; i++){
             console.log(articles[i]);
             const articleId = articles[i].id;
@@ -56,7 +55,6 @@ router.get('/get-all-articles', async (req, res) => {
             if(!result.length)
                 unreadArticles++;
         }
-
 
         res.status(200).json({articles, unreadArticles});
     }
