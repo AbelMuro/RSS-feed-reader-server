@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const {v4: uuid} = require('uuid');
 const db = require('../../Config/MySQL/db.js');
 const jwt = require('jsonwebtoken');
 const {config} = require('dotenv');
@@ -16,11 +17,12 @@ router.put('/save-article', async (req, res) => {
 
         const decodedToken = jwt.decode(accountToken, JWT_SECRET);
         const accountId = decodedToken.id;
+        const savedArticleId = uuid();
 
         const [results] = await db.execute(
-            'UPDATE accounts SET savedArticles = ? WHERE id = ?',
-            [articleId, accountId]
-        )
+            'INSERT INTO saved_articles (id, articleId, accountId) VALUES (?, ?, ?)',
+            [savedArticleId, articleId, accountId]
+        );
 
         if(!results.affectedRows)
             return res.status(500).send(results.message);

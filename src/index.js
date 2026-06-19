@@ -24,8 +24,9 @@ const UpdateArticleToRead = require('./Routes/PUT/UpdateArticleToRead.js');
 const UpdateAllArticlesToRead = require('./Routes/PUT/UpdateAllArticlesToRead.js');
 const UpdateCategories = require('./Routes/PUT/UpdateCategories.js');
 const GetCategories = require('./Routes/GET/GetCategories.js');
-const UpdateArticleToSaved = require('./Routes/PUT/UpdateArticleToSaved.js');
+const SaveArticle = require('./Routes/POST/SaveArticle.js');
 const GetArticleSavedStatus = require('./Routes/GET/GetArticleSavedStatus.js');
+const UnsaveArticle = require('./Routes/DELETE/UnsaveArticle.js');
 const app = express();
 const port = 4000;
 
@@ -62,8 +63,9 @@ app.use(UpdateAllArticlesToRead);
 app.use(UpdateCategories);
 app.use(GetCategories);
 app.use(GetArticle);
-app.use(UpdateArticleToSaved);
+app.use(SaveArticle);
 app.use(GetArticleSavedStatus);
+app.use(UnsaveArticle);
 
 app.get('/', (req, res) => {
     res.send('hello world');

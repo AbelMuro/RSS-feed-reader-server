@@ -5,9 +5,9 @@ const jwt = require('jsonwebtoken');
 const {config} = require('dotenv');
 config();
 
-router.get('/is-article-saved/:articleId', async (req, res) => {
+router.put('/unsave-article', async (req, res) => {
     try{
-        const articleId = req.params.articleId;
+        const {articleId} = req.body;
         const JWT_SECRET = process.env.JWT_SECRET;
         const accountToken = req.cookies.accountToken;
 
@@ -18,14 +18,15 @@ router.get('/is-article-saved/:articleId', async (req, res) => {
         const accountId = decodedToken.id;
 
         const [results] = await db.execute(
-            'SELECT * FROM saved_articles WHERE accountId = ? AND articleId = ?',
-            [accountId, articleId]
+            'DELETE FROM saved_articles WHERE articleId = ? AND accountId = ?',
+            [articleId, accountId]
         );
 
-        if(!results.length)
-            return res.status(200).json(false);
+        if(!results.affectedRows)
+            return res.status(403).send(results.message);
 
-        res.status(200).json(true);
+        res.status(200).send('Article has been removed from the saved list');
+
     }
     catch(error){
         const message = error.message;
