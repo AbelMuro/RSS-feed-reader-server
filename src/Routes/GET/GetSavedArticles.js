@@ -31,8 +31,6 @@ router.get('/get-saved-articles', async (req, res) => {
             articles.push(results[0]);
         };
 
-        console.log()
-
 
         res.status(200).json({articles});
 
