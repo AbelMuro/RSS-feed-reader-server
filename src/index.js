@@ -28,6 +28,7 @@ const SaveArticle = require('./Routes/POST/SaveArticle.js');
 const GetArticleSavedStatus = require('./Routes/GET/GetArticleSavedStatus.js');
 const UnsaveArticle = require('./Routes/DELETE/UnsaveArticle.js');
 const GetSavedArticles = require('./Routes/GET/GetSavedArticles.js');
+const UpdateArticleViews = require('./Routes/PUT/UpdateArticleViews.js');
 const app = express();
 const port = 4000;
 
@@ -68,6 +69,7 @@ app.use(SaveArticle);
 app.use(GetArticleSavedStatus);
 app.use(UnsaveArticle);
 app.use(GetSavedArticles);
+app.use(UpdateArticleViews);
 
 app.get('/', (req, res) => {
     res.send('hello world');
