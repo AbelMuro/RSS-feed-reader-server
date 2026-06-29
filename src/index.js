@@ -29,6 +29,8 @@ const GetArticleSavedStatus = require('./Routes/GET/GetArticleSavedStatus.js');
 const UnsaveArticle = require('./Routes/DELETE/UnsaveArticle.js');
 const GetSavedArticles = require('./Routes/GET/GetSavedArticles.js');
 const UpdateArticleViews = require('./Routes/PUT/UpdateArticleViews.js');
+const GetMostViewedArticles = require('./Routes/GET/GetMostViewedArticles.js');
+const GetArticleCoverImage = require('./Routes/GET/GetArticleCoverImage.js');
 const app = express();
 const port = 4000;
 
@@ -70,6 +72,8 @@ app.use(GetArticleSavedStatus);
 app.use(UnsaveArticle);
 app.use(GetSavedArticles);
 app.use(UpdateArticleViews);
+app.use(GetMostViewedArticles);
+app.use(GetArticleCoverImage);
 
 app.get('/', (req, res) => {
     res.send('hello world');
