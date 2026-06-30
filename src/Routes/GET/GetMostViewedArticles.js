@@ -8,7 +8,15 @@ router.get('/get-most-viewed-articles', async (req, res) => {
             'SELECT * FROM articles'
         );
 
-        res.status(200).json(articles);
+        const sortedArticlesBasedOnViews = articles.sort((articleA, articleB) => {
+            if(articleA.views > articleB.views)
+                return -1;
+            else
+                return 1;
+        });
+
+
+        res.status(200).json(sortedArticlesBasedOnViews.slice(0, 10));
     }
     catch(error){
         const message = error.message;

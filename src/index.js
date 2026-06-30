@@ -31,6 +31,7 @@ const GetSavedArticles = require('./Routes/GET/GetSavedArticles.js');
 const UpdateArticleViews = require('./Routes/PUT/UpdateArticleViews.js');
 const GetMostViewedArticles = require('./Routes/GET/GetMostViewedArticles.js');
 const GetArticleCoverImage = require('./Routes/GET/GetArticleCoverImage.js');
+const GetMostSavedArticles = require('./Routes/GET/GetMostSavedArticles.js');
 const app = express();
 const port = 4000;
 
@@ -74,6 +75,7 @@ app.use(GetSavedArticles);
 app.use(UpdateArticleViews);
 app.use(GetMostViewedArticles);
 app.use(GetArticleCoverImage);
+app.use(GetMostSavedArticles);
 
 app.get('/', (req, res) => {
     res.send('hello world');
